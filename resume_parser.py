@@ -23,7 +23,6 @@ def main(fn):
     return fn
 
 
-
 def get_resume_dict(input_args):
 	print("Fetching resumes.")
 	resume_id = 1
@@ -40,6 +39,11 @@ def get_resume_dict(input_args):
 
 def put_in_db(inputs_list):
 	print("Creating a database")
+	if not len(inputs_list):
+		print ("No input is given")
+		raise EOFError
+		
+	inputs_list = list(inputs_list)
 	connection = sqlite3.connect('resumes.db')
 	cursor = connection.cursor()
 	
@@ -47,15 +51,16 @@ def put_in_db(inputs_list):
 	# convert into list of 2 pair tuples
 	resume_file_list = [(key, resume_dict[key]) for key in resume_dict.keys()]
 
-	# create table in db
+	# drop if it exists and create table in db
+	cursor.execute("DROP TABLE IF EXISTS resumes")
 	cursor.execute(''' CREATE TABLE resumes
 						(id real, resume text)''')
 
 	# Insert rows of data to our table in single time from list of data
 	cursor.executemany('INSERT INTO resumes VALUES (?,?)', resume_file_list)
+	cursor.commit()
 
 	connection.close()
-
 
 @main
 def run(*args):
