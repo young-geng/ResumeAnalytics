@@ -4,6 +4,7 @@
 import inspect
 import sys
 import sqlite3
+import re
 
 
 def main(fn):
@@ -25,11 +26,11 @@ def main(fn):
 
 def get_resume_dict(input_args):
 	print("Fetching resumes.")
-	resume_id = 1
+	resume_id = 0
 	return_dict = {}
 	while input_args:
-		open_file = open(input_args[resume_id], 'r')
-		return_dict[resume_id] = open_file.read()
+		open_file = open(input_args[0], 'r')
+		return_dict[resume_id] = re.sub(r'[^ -~]+', ' ', open_file.read()).encode('ascii', 'ignore')
 		input_args.pop(0)
 		resume_id += 1
 		open_file.close()
@@ -42,7 +43,7 @@ def put_in_db(inputs_list):
 	if not len(inputs_list):
 		print ("No input is given")
 		raise EOFError
-		
+
 	inputs_list = list(inputs_list)
 	connection = sqlite3.connect('resumes.db')
 	cursor = connection.cursor()
@@ -58,7 +59,7 @@ def put_in_db(inputs_list):
 
 	# Insert rows of data to our table in single time from list of data
 	cursor.executemany('INSERT INTO resumes VALUES (?,?)', resume_file_list)
-	cursor.commit()
+	connection.commit()
 
 	connection.close()
 
