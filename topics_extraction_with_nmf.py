@@ -14,10 +14,12 @@ the example runnable in a couple of tens of seconds. You can try to
 increase the dimensions of the problem, but be aware than the time complexity
 is polynomial.
 
+This script has been commandeered in order to process resume data.
 """
 
 # Author: Olivier Grisel <olivier.grisel@ensta.org>
 #         Lars Buitinck <L.J.Buitinck@uva.nl>
+#         Rahul Verma <rahul.verma@berkeley.edu>
 # License: BSD 3 clause
 
 from __future__ import print_function
@@ -35,19 +37,12 @@ n_features = 2000
 n_topics = 19
 n_top_words = 20
 
-# Load the 20 newsgroups dataset and vectorize it. We use a few heuristics
-# to filter out useless terms early on: the posts are stripped of headers,
-# footers and quoted replies, and common English words, words occurring in
-# only one document or in at least 95% of the documents are removed.
 
 t0 = time()
 print("Loading dataset and extracting TF-IDF features...")
-#dataset = fetch_20newsgroups(shuffle=True, random_state=1,
-#                             remove=('headers', 'footers', 'quotes'))
 
 vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=n_features,
                              stop_words='english')
-#tfidf = vectorizer.fit_transform(dataset.data[:n_samples])
 
 paths = ['output/' + i for i in listdir('./output')]
 documents = []
@@ -76,7 +71,7 @@ print("done in %0.3fs." % (time() - t0))
 # Fit the NMF model
 print("Fitting the NMF model with n_samples=%d and n_features=%d..."
       % (n_samples, n_features))
-#nmf = NMF(n_components=n_topics, random_state=1).fit(tfidf)
+
 nmf = NMF(n_components=n_topics, random_state=1).fit(tfidf)
 print("done in %0.3fs." % (time() - t0))
 
