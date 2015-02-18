@@ -14,17 +14,15 @@ the example runnable in a couple of tens of seconds. You can try to
 increase the dimensions of the problem, but be aware than the time complexity
 is polynomial.
 
-This script has been commandeered in order to process resume data.
 """
 
 # Author: Olivier Grisel <olivier.grisel@ensta.org>
 #         Lars Buitinck <L.J.Buitinck@uva.nl>
-#         Rahul Verma <rahul.verma@berkeley.edu>
 # License: BSD 3 clause
 
 from __future__ import print_function
 from time import time
-from os import listdir
+import sqlite3
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
@@ -32,48 +30,36 @@ from sklearn.decomposition import SparsePCA
 from scipy import io
 from sklearn.datasets import fetch_20newsgroups
 
-n_samples = 2000
-n_features = 2000
-n_topics = 19
-n_top_words = 20
+
+n_features = 3000
+n_topics = 30
+n_top_words = 80
+
+# Load the 20 newsgroups dataset and vectorize it. We use a few heuristics
+# to filter out useless terms early on: the posts are stripped of headers,
+# footers and quoted replies, and common English words, words occurring in
+# only one document or in at least 95% of the documents are removed.
 
 
-t0 = time()
 print("Loading dataset and extracting TF-IDF features...")
+
 
 vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=n_features,
                              stop_words='english')
 
-paths = ['output/' + i for i in listdir('./output')]
 documents = []
+connection = sqlite3.connect('resumes.db')
+cursor = connection.cursor()
+for row in cursor.execute('SELECT resume from resumes'):
+    documents.append(row[0])
 
-for path in paths:
-    with open(path) as f:
-        try:
-            data = f.read().lower()
-            string = ''
-            for i in data:
-                if i in '+abcdefghijklmnopqrstuvwxyz ':
-                    string += i
-                else:
-                    string += ''
-            data = string.encode(errors='ignore').strip()
-            documents.append(data)
-        except Exception as e:
-            print(e)
-            continue
-            
 
-exit
 tfidf = vectorizer.fit_transform(documents)
-print("done in %0.3fs." % (time() - t0))
 
+print(len(documents))
 # Fit the NMF model
-print("Fitting the NMF model with n_samples=%d and n_features=%d..."
-      % (n_samples, n_features))
-
 nmf = NMF(n_components=n_topics, random_state=1).fit(tfidf)
-print("done in %0.3fs." % (time() - t0))
+
 
 feature_names = vectorizer.get_feature_names()
 
