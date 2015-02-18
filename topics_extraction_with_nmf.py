@@ -64,7 +64,7 @@ for path in paths:
             continue
             
 
-exit
+
 tfidf = vectorizer.fit_transform(documents)
 print("done in %0.3fs." % (time() - t0))
 
