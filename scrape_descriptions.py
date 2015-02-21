@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import re
 import urllib.request
 
+# returns a list of the id numbers (strings) for every listing matching a certain search criteria, up to num_pages
 def get_page_ids(position="software+engineer", location="California", num_pages=1): 		#use "+" for spaces		
 	base_url = "http://www.indeed.com/jobs?q=" + position + "&l=" + location + "&start=";		# append 10, 20, 30... for more pages
 
@@ -18,6 +19,9 @@ def get_page_ids(position="software+engineer", location="California", num_pages=
 			all_post_ids.append(i)
 	return all_post_ids
 
+# parses the actual listings to get job titles and descriptions
+# removes html tags and new lines, appends the title to the description
+# returns a list of all of the combined job postings (strings)
 def get_listings(post_ids=get_page_ids()):
 	jobs = []
 	for p_id in post_ids:
