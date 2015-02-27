@@ -46,8 +46,12 @@ vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=n_features,
 
 paths = ['output/' + i for i in listdir('./output')]
 documents = []
+counter = 0
 
 for path in paths:
+    if counter == n_samples:
+        break;
+    counter += 1
     with open(path) as f:
         try:
             data = f.read().lower()

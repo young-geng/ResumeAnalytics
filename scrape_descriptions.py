@@ -22,6 +22,9 @@ def get_page_ids(position="software+engineer", location="California", num_pages=
 # parses the actual listings to get job titles and descriptions
 # removes html tags and new lines, appends the title to the description
 # returns a list of all of the combined job postings (strings)
+
+# Known bug: Some downloaded pages have apparent html tag errors.  
+# The commands that strip out html tags may strip some of the text as well if such errors exist.
 def get_listings(post_ids=get_page_ids()):
 	jobs = []
 	for p_id in post_ids:
@@ -43,3 +46,17 @@ def get_listings(post_ids=get_page_ids()):
 		jobs.append(str(title)+str(description))
 
 	return jobs
+
+# Writes the contents of each element in jobs into its own text file
+# Assumes you have a folder in the same directory called "output" to hold the text files
+def write_listings(jobs):
+	counter = 1
+	for job in jobs:
+		f = open("output/job"+str(counter)+".txt", "w")
+		f.write(job)
+		counter += 1
+
+
+
+
+
