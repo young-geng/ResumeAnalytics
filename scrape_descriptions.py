@@ -31,17 +31,21 @@ def get_listings(post_ids=get_page_ids()):
 		sock = urllib.request.urlopen("http://www.indeed.com/viewjob?jk=" + p_id)
 		filename = sock.read()
 		sock.close()
-		soup = BeautifulSoup(filename)
+		soup = BeautifulSoup(filename, "html5")
 
 		title = soup.find("div", {"id": "job_header"})
-		title = re.sub("<.[^/<>]*>", "", str(title))	# strip out html tags
-		title = re.sub("</.[^/<>]*>", "", str(title))	# strip out html tags
-		title = re.sub("\n", "", str(title))	# strip out newlines
+		title = title.get_text()
+		title = re.sub("\n", "", str(title))
+		#title = re.sub("<.[^/<>]*>", "", str(title))	# strip out html tags
+		#title = re.sub("</.[^/<>]*>", "", str(title))	# strip out html tags
+		#title = re.sub("\n", "", str(title))	# strip out newlines
 
 		description = soup.find("span", {"id": "job_summary"})
-		description = re.sub("<.[^/<>]*>", "", str(description))	# strip out html tags
-		description = re.sub("</.[^/<>]*>", "", str(description))	# strip out html tags
-		description = re.sub("\n", "", str(description))	# strip out newlines
+		description = description.get_text()
+		description = re.sub("\n", "", str(description))
+		#description = re.sub("<.[^/<>]*>", "", str(description))	# strip out html tags
+		#description = re.sub("</.[^/<>]*>", "", str(description))	# strip out html tags
+		#description = re.sub("\n", "", str(description))	# strip out newlines
 
 		jobs.append(str(title)+str(description))
 
@@ -49,7 +53,7 @@ def get_listings(post_ids=get_page_ids()):
 
 # Writes the contents of each element in jobs into its own text file
 # Assumes you have a folder in the same directory called "output" to hold the text files
-# Jobs files will be named "jobx.txt" where x is a number from 1 to len(jobs)
+# Job files will be named "jobx.txt" where x is a number from 1 to len(jobs)
 def write_listings(jobs):
 	counter = 1
 	for job in jobs:
