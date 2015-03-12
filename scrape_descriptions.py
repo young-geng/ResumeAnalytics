@@ -36,16 +36,10 @@ def get_listings(post_ids=get_page_ids()):
 		title = soup.find("div", {"id": "job_header"})
 		title = title.get_text()
 		title = re.sub("\n", "", str(title))
-		#title = re.sub("<.[^/<>]*>", "", str(title))	# strip out html tags
-		#title = re.sub("</.[^/<>]*>", "", str(title))	# strip out html tags
-		#title = re.sub("\n", "", str(title))	# strip out newlines
 
 		description = soup.find("span", {"id": "job_summary"})
 		description = description.get_text()
 		description = re.sub("\n", "", str(description))
-		#description = re.sub("<.[^/<>]*>", "", str(description))	# strip out html tags
-		#description = re.sub("</.[^/<>]*>", "", str(description))	# strip out html tags
-		#description = re.sub("\n", "", str(description))	# strip out newlines
 
 		jobs.append(str(title)+str(description))
 
