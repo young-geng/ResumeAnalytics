@@ -28,8 +28,11 @@ def scrape_page(page_num):
         except:
             continue
         resume = BeautifulSoup(j['html'])
-        text = resume.get_text()        
-        resumes.append((text, pop.find('p', attrs = {'class': 'font11 grayText tRight'}).get_text().split('ed ')[1]))
+        text = resume.get_text() 
+        date = pop.find('p', attrs = {'class': 'font11 grayText tRight'}).get_text().split('ed ')[1]
+        if len(date) < 10:
+            date = date + " 2015"       
+        resumes.append((text, date))
     return resumes
 
 
