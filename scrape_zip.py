@@ -24,7 +24,7 @@ def scrape_page(page_num):
         resid = url.split('preview/')[1].split('?')[0]
         url = 'https://www.ziprecruiter.com/contact/zip-resume/{0}?q=%22software%20engineer%22'.format(resid)
         try:
-            j = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
+            j = json.loads(urlopen(url).read().decode('utf-8'))
         except:
             continue
         resume = BeautifulSoup(j['html'])
@@ -35,16 +35,15 @@ def scrape_page(page_num):
 
 def main():
     num_pages = 201
-    num_pages = 2
     conn = sqlite3.connect('resumes.db')
     cursor = conn.cursor()
     cursor.execute("DROP TABLE IF EXISTS resumes")
     cursor.execute(''' CREATE TABLE resumes (resume text, date text)''')
-    resumes = map(scrape_page, range(num_pages))
+    resumes = parmap(scrape_page, range(num_pages), 80)
     resumes = reduce(lambda x, y: x + y, resumes)
     print(len(resumes))
     for i in range(len(resumes)):
-        cursor.execute('INSERT INTO resumes VALUES (?,?)', (resumes[i][0], dates[i][1])) 
+        cursor.execute('INSERT INTO resumes VALUES (?,?)', (resumes[i][0], resumes[i][1])) 
 
     conn.commit()
 
