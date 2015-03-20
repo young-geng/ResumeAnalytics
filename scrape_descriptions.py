@@ -23,9 +23,9 @@ def get_page_ids(position="software+engineer", location="California", num_pages=
 # removes html tags and new lines, appends the title to the description
 # returns a list of all of the combined job postings (strings)
 
-# Known bug: Some downloaded pages have apparent html tag errors.  
+# Known bug: Some downloaded pages have apparent html tag errors. 
 # The commands that strip out html tags may strip some of the text as well if such errors exist.
-def get_listings(post_ids=get_page_ids()):
+def get_listings(post_ids):
 	jobs = []
 	for p_id in post_ids:
 		sock = urllib.request.urlopen("http://www.indeed.com/viewjob?jk=" + p_id)
@@ -54,8 +54,3 @@ def write_listings(jobs):
 		f = open("output/job"+str(counter)+".txt", "w")
 		f.write(job)
 		counter += 1
-
-
-
-
-
