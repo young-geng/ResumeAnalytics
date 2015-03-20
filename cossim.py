@@ -15,7 +15,7 @@ def cossim(database_name, num_listings):
 	for row in cur:
 		resumes.append(row)
 
-	for i in range(min(len(resumes), num_listings)):
+	for i in range(len(resumes)):
 		doc = str(resumes[i][1])
 		for j in range(len(listings_topics)):
 			total = 0
@@ -27,7 +27,7 @@ def cossim(database_name, num_listings):
 	resume_matrix = np.matrix(curmatrix)
 
 	curmatrix = ""
-	for i in range(min(num_listings, len(resumes))):
+	for i in range(num_listings):
 		f = open("output/job"+str(i+1)+".txt", "r")
 		doc = f.read()
 		for j in range(len(listings_topics)):
@@ -48,12 +48,11 @@ def cossim(database_name, num_listings):
 	norm_dotted = np.dot(resume_norm, listing_norm.getT()).getA()
 
 	# np.divide() wasn't cooperating, I guess b/c they're ints
-	to_return = [[0 for x in range(min(num_listings, len(resumes)))] for x in range(min(num_listings, len(resumes)))] 
-	for i in range(min(num_listings, len(resumes))):
-		for j in range(min(num_listings, len(resumes))):
+	to_return = [[0 for x in range(num_listings)] for x in range(len(resumes))] 
+	for i in range(len(resumes)):
+		for j in range(num_listings):
 			to_return[i][j] = float(dotted[i][j]) / float(norm_dotted[i][j])
-			
-	return to_return
+	return to_return, norm_dotted, dotted
 
 # Retrieves topics saved in a txt file called "topics.txt"
 def get_topics():
