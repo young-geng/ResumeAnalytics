@@ -52,7 +52,7 @@ def cossim(database_name, num_listings):
 	for i in range(len(resumes)):
 		for j in range(num_listings):
 			to_return[i][j] = float(dotted[i][j]) / float(norm_dotted[i][j])
-	return to_return, norm_dotted, dotted
+	return to_return
 
 # Retrieves topics saved in a txt file called "topics.txt"
 def get_topics():
