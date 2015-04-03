@@ -35,10 +35,13 @@ def w_cos_sim(documents_list_1, documents_list_2, n_words=2000):
 """
 Cosine similarity for 2 lists of documents, based on topic modeling
 """
-def w_cos_sim(documents_list_1, documents_list_2, n_words=2000):
-    design_matrix_1 = tfidf_vectorize(documents_list_1, n_words)[0]
-    design_matrix_2 = tfidf_vectorize(documents_list_2, n_words)[0]
-    return cos_sim(design_matrix_1, design_matrix_2)
+def w_cos_sim_topics(documents_list_1, documents_list_2, n_words=2000, n_topics=40, n_words_per_topic=100):
+    design_matrix_1, words_1 = tfidf_vectorize(documents_list_1, n_words)[0]
+    design_matrix_2, words_2 = tfidf_vectorize(documents_list_2, n_words)[0]
+    transformed_1 = extract_topics(design_matrix_1, words_1, n_topics, n_words_per_topic)[0]
+    transformed_2 = extract_topics(design_matrix_2, words_2, n_topics, n_words_per_topic)[0]
+
+    return cos_sim(transformed_1, transformed_2)
 
 
 
