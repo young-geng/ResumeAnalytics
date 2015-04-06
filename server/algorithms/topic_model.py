@@ -20,5 +20,5 @@ def extract_topics(sparse_matrix, feature_names, n_topics=19, n_top_words=20):
     topics = []
     for topic_idx, topic in enumerate(nmf.components_):
         topics.append([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]])
-    return transformed_data, to_return
+    return transformed_data, topics
 
