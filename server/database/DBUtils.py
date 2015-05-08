@@ -4,13 +4,23 @@ import sqlite3
 
 """ Store the content of files into resumes database """
 def store_resumes(files):
-    pass
-
+    conn = sqlite3.connect('analysis.db')
+    cur = conn.cursor()
+    conn.execute("CREATE TABLE IF NOT EXISTS resumes (resume text)")
+    for f in files:
+        conn.execute("INSERT INTO resumes ?", f)
 
 
 """ Store the content of files into jobs database """
 def store_jobs(files):
-    pass
+    conn = sqlite3.connect('analysis.db')
+    cur = conn.cursor()
+    conn.execute("CREATE TABLE IF NOT EXISTS jobs (job text)")
+    for f in files:
+        conn.execute("INSERT INTO jobs ?", f)
+
+
+
 
 
 """ Return a list of all resumes """
