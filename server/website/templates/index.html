@@ -38,12 +38,11 @@
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Cover</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li class="active"><a href="/">Home</a></li>
+                  <li><a href="/login">Login</a></li>
+                  <li><a href="/contact">Contact</a></li>
                 </ul>
               </nav>
             </div>
@@ -51,10 +50,18 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">Resume Analytics.</h1>
-            <!-- <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-            <p class="lead"> -->
-              <!-- <a href="#" class="btn btn-lg btn-default">Learn more</a> -->
-            <!-- </p> -->
+
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="/upload"><button type="button" class="btn btn-default">Upload Job Listing</button></a>
+
+  
+            </div>
+
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="/upload"><button type="button" onclick="upload_resume()" class="btn btn-default">Upload Resume</button></a>
+              
+            </div>
+
           </div>
 
           <div class="mastfoot">

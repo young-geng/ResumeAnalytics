@@ -7,7 +7,6 @@ import upload
 app = Flask(__name__)
 
 @app.route('/')
-@app.route('/<name>')
 def index(name=None):
 	return render_template('index.html', name=name)
 	
@@ -23,6 +22,11 @@ def upload_file():
 			return redirect(url_for('uploaded_file', filename=filename))
 
 	return render_template('upload.html')
+
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact_us():
+	return render_template('contact.html')
 
 
 if __name__ == '__main__':
