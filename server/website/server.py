@@ -10,6 +10,7 @@ app = Flask(__name__)
 @app.route('/<name>')
 def index(name=None):
 	return render_template('index.html', name=name)
+	
 
 @app.route('/upload', methods=['GET', 'POST'])
 @app.route('/<user_name>/upload', methods=['GET', 'POST'])
